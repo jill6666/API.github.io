@@ -5,10 +5,18 @@ import './App.css';
 const GetCountriesData = () => {
     const [country, setCountry] = useState('Taiwan');
     const [people, setPeople] = useState(23000000);
-    const [language, setLanguage] = useState('Chinese');
+    const [capital, setCapital] = useState('Taipei');
     const [currencies, setCurrencies] = useState([]);
     const [alpha3Code, setAlpha3Code] = useState('twn');
 
+    var thousandComma = function (number) {
+      var num = number.toString();
+      var pattern = /(-?\d+)(\d{3})/;
+      while (pattern.test(num)) {
+          num = num.replace(pattern, "$1,$2");
+      }
+      return num;
+  }
     const fetchCountriesData = (props) => {
       fetch(`https://restcountries.eu/rest/v2/name/${props}`)
       .then((response) => response.json())
@@ -18,7 +26,7 @@ const GetCountriesData = () => {
         setCountry(()=>countryElement.name);
         setPeople(()=>countryElement.population);
         setAlpha3Code(()=>countryElement.alpha3Code.toLowerCase());
-        setLanguage(()=>countryElement.capital);
+        setCapital(()=>countryElement.capital);
         setCurrencies(()=>countryElement.currencies.code);
         });
     };
@@ -65,8 +73,8 @@ const GetCountriesData = () => {
         onChange={(e)=>fetchCountriesData(e.value)}          
       />
       <h4 className="country__region"></h4>
-      <p className="country__row"><span>👫</span>{people}</p>
-      <p className="country__row"><span>🗣️</span>{language}</p>
+      <p className="country__row"><span>👫</span>{thousandComma(people)}</p>
+      <p className="country__row"><span>🗣️</span>{capital}</p>
       <p className="country__row"><span>💰</span>{currencies}</p>
     </div>
   </div>
